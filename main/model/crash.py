@@ -16,8 +16,8 @@ class Crash(model.Base):
   guid = ndb.StringProperty(required=True, verbose_name=u'GUID')
   version = ndb.StringProperty(required=True, verbose_name=u'App Version')
   productName = ndb.StringProperty(required=True, verbose_name=u'Product Name')
-  prod = ndb.StringProperty(default='Electron', required=True, verbose_name=u'Underlying Product')
   companyName = ndb.StringProperty(required=True, verbose_name=u'Company Name')
+  prod = ndb.StringProperty(default='Electron', required=True, verbose_name=u'Underlying Product')
   blob_key = ndb.BlobKeyProperty()
 
   @property

@@ -10,6 +10,7 @@
       # if current_user.admin
         <li class="divider"></li>
         <li><a href="{{url_for('admin')}}"><span class="fa fa-fw fa-cog"></span> Admin</a></li>
+        <li><a href="{{url_for('admin_crash_list')}}"><span class="fa fa-fw fa-bomb"></span> Crash List</a></li>
         <li class="divider"></li>
       # endif
       <li><a href="{{url_for('signout')}}"><span class="fa fa-fw fa-sign-out"></span> Sign out</a></li>

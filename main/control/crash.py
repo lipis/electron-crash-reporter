@@ -43,27 +43,22 @@ class CrashUpdateForm(wtf.Form):
     model.Crash.version._verbose_name,
     [wtforms.validators.optional()],
     filters=[util.strip_filter],
-    description='The version in package.json.',
   )
   productName = wtforms.StringField(
     model.Crash.productName._verbose_name,
     [wtforms.validators.optional()],
     filters=[util.strip_filter],
-    description='The product name in the crashReporter options object.',
   )
   prod = wtforms.StringField(
     model.Crash.prod._verbose_name,
     [wtforms.validators.required()],
     filters=[util.strip_filter],
-    description='Name of the underlying product. In this case Electron.',
   )
   companyName = wtforms.StringField(
     model.Crash.companyName._verbose_name,
     [wtforms.validators.optional()],
     filters=[util.strip_filter],
-    description='The company name in the crashReporter options object.',
   )
-
   upload_file_minidump = wtforms.FileField(
     'File',
     [wtforms.validators.required()],
@@ -83,13 +78,20 @@ def crash_create():
     form.version.data = util.param('_version') or form.version.data
     form.productName.data = util.param('_productName') or form.productName.data
     form.companyName.data = util.param('_companyName') or form.companyName.data
-    form.populate_obj(crash_db)
+    if not form.version.data:
+      form.version.errors.append('This field is required.')
+    if not form.productName.data:
+      form.productName.errors.append('This field is required.')
+    if not form.companyName.data:
+      form.companyName.errors.append('This field is required.')
 
-    file_data = flask.request.files[form.upload_file_minidump.name].read()
-    blob_key = create_file(form.guid.data, file_data)
-    crash_db.blob_key = blob_key
-    crash_db.put()
-    return '200'
+    if not form.errors:
+      form.populate_obj(crash_db)
+      file_data = flask.request.files[form.upload_file_minidump.name].read()
+      blob_key = create_file(form.guid.data, file_data)
+      crash_db.blob_key = blob_key
+      crash_db.put()
+      return '200'
 
   return flask.render_template(
     'crash/crash_update.html',
@@ -117,7 +119,7 @@ def create_file(name, data):
 @auth.admin_required
 def admin_crash_list():
   crash_dbs, crash_cursor = model.Crash.get_dbs(
-    order=util.param('order') or '-modified',
+    order=util.param('order') or '-created',
   )
   return flask.render_template(
     'crash/admin_crash_list.html',

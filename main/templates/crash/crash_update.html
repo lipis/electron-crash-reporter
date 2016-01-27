@@ -20,8 +20,16 @@
         {{forms.text_field(form.productName)}}
         {{forms.text_field(form.prod)}}
         {{forms.text_field(form.companyName)}}
-        {{form.upload_file_minidump}}
-        <button type="submit" class="btn btn-primary btn-block btn-loading" {{forms.data_loading_text()}}>
+        <div class="form-group" style="position: relative;">
+          <a class='btn btn-default' href='javascript:;'>
+            Choose File...
+            {{form.upload_file_minidump(class='form-control', style='position:absolute;z-index:2;top:0;left:0;right:0;bottom:0;opacity:0;background-color:red;color:red;', onchange='$(this).parent().next().html($(this).val());')}}
+          </a>
+          &nbsp;
+          <span class='label label-default'></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg btn-loading" {{forms.data_loading_text()}}>
           # if crash_db.key
             Update
           # else
