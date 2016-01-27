@@ -11,6 +11,9 @@
     </div>
     <nav class="collapse navbar-collapse" role="navigation">
       <ul class="nav navbar-nav">
+        <li class="{{'active' if html_class == 'crash-list'}}">
+          <a href="{{url_for('crash_list')}}"><span class="fa fa-fw fa-bomb"></span> Crash List</a>
+        </li>
         # include 'bit/contact_menu.html'
       </ul>
       <ul class="nav navbar-nav navbar-right">

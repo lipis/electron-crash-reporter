@@ -1,4 +1,4 @@
-application: gae-init
+application: wire-crash
 version: 1
 module: default
 instance_class: F1
@@ -45,6 +45,9 @@ handlers:
 - url: /p/
   static_dir: static/
   expiration: 1000d
+
+- url: /serve/.*
+  script: control.serve.app
 
 - url: /.*
   script: main.app

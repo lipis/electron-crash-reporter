@@ -1,0 +1,61 @@
+# extends 'base.html'
+# import 'macro/forms.html' as forms
+# import 'macro/utils.html' as utils
+
+
+# block content
+  <div class="page-header">
+    <div class="pull-right">
+      <a class="btn btn-default" href="{{url_for('crash_update')}}" title="Add Crash">
+        <fa class="fa fa-plus fa-fw"></fa>
+      </a>
+      <a class="btn btn-primary" href="{{url_for('crash_update', crash_id=crash_db.key.id())}}">
+        <fa class="fa fa-fw fa-pencil"></fa> Edit
+      </a>
+    </div>
+    <h1>
+      {{utils.back_link('Back', 'crash_list')}}
+      {{title}}
+    </h1>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <table class="table table-bordered table-striped">
+        <tbody>
+          <tr>
+            <th class="text-nowrap col-xs-1">Electron Version</th>
+            <td class="col-xs-11">{{crash_db.ver}}</td>
+          </tr>
+          <tr>
+            <th class="text-nowrap col-xs-1">Platform</th>
+            <td class="col-xs-11">{{crash_db.platform}}</td>
+          </tr>
+          <tr>
+            <th class="text-nowrap col-xs-1">Process Type</th>
+            <td class="col-xs-11">{{crash_db.process_type}}</td>
+          </tr>
+          <tr>
+            <th class="text-nowrap col-xs-1">GUID</th>
+            <td class="col-xs-11">{{crash_db.guid}}</td>
+          </tr>
+          <tr>
+            <th class="text-nowrap col-xs-1">App Version</th>
+            <td class="col-xs-11">{{crash_db.version}}</td>
+          </tr>
+          <tr>
+            <th class="text-nowrap col-xs-1">Product Name</th>
+            <td class="col-xs-11">{{crash_db.productName}}</td>
+          </tr>
+          <tr>
+            <th class="text-nowrap col-xs-1">Underlying Product</th>
+            <td class="col-xs-11">{{crash_db.prod}}</td>
+          </tr>
+          <tr>
+            <th class="text-nowrap col-xs-1">Company Name</th>
+            <td class="col-xs-11">{{crash_db.companyName}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+# endblock
