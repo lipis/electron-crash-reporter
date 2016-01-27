@@ -70,13 +70,9 @@ class CrashUpdateForm(wtf.Form):
   )
 
 
-@app.route('/crash/create/', methods=['GET', 'POST'])
-@app.route('/crash/<int:crash_id>/update/', methods=['GET', 'POST'])
-def crash_update(crash_id=0):
-  if crash_id:
-    crash_db = model.Crash.get_by_id(crash_id)
-  else:
-    crash_db = model.Crash()
+@app.route('/create/', methods=['GET', 'POST'])
+def crash_create():
+  crash_db = model.Crash()
 
   if not crash_db:
     flask.abort(404)
@@ -97,7 +93,7 @@ def crash_update(crash_id=0):
 
   return flask.render_template(
     'crash/crash_update.html',
-    title=crash_db.guid if crash_id else 'New Crash',
+    title='New Crash',
     html_class='crash-update',
     form=form,
     crash_db=crash_db,
@@ -112,40 +108,6 @@ def create_file(name, data):
   # Blobstore API requires extra /gs to distinguish against blobstore files.
   blobstore_filename = '/gs' + filename
   return ndb.BlobKey(blobstore.create_gs_key(blobstore_filename))
-
-
-###############################################################################
-# List
-###############################################################################
-@app.route('/crash/')
-def crash_list():
-  crash_dbs, crash_cursor = model.Crash.get_dbs()
-  return flask.render_template(
-    'crash/crash_list.html',
-    html_class='crash-list',
-    title='Crash List',
-    crash_dbs=crash_dbs,
-    next_url=util.generate_next_url(crash_cursor),
-    api_url=flask.url_for('api.crash.list'),
-  )
-
-
-###############################################################################
-# View
-###############################################################################
-@app.route('/crash/<int:crash_id>/')
-def crash_view(crash_id):
-  crash_db = model.Crash.get_by_id(crash_id)
-  if not crash_db:
-    flask.abort(404)
-
-  return flask.render_template(
-    'crash/crash_view.html',
-    html_class='crash-view',
-    title=crash_db.guid,
-    crash_db=crash_db,
-    api_url=flask.url_for('api.crash', crash_key=crash_db.key.urlsafe() if crash_db.key else ''),
-  )
 
 
 ###############################################################################
@@ -164,41 +126,4 @@ def admin_crash_list():
     crash_dbs=crash_dbs,
     next_url=util.generate_next_url(crash_cursor),
     api_url=flask.url_for('api.admin.crash.list'),
-  )
-
-
-###############################################################################
-# Admin Update
-###############################################################################
-class CrashUpdateAdminForm(CrashUpdateForm):
-  pass
-
-
-@app.route('/admin/crash/create/', methods=['GET', 'POST'])
-@app.route('/admin/crash/<int:crash_id>/update/', methods=['GET', 'POST'])
-@auth.admin_required
-def admin_crash_update(crash_id=0):
-  if crash_id:
-    crash_db = model.Crash.get_by_id(crash_id)
-  else:
-    crash_db = model.Crash()
-
-  if not crash_db:
-    flask.abort(404)
-
-  form = CrashUpdateAdminForm(obj=crash_db)
-
-  if form.validate_on_submit():
-    form.populate_obj(crash_db)
-    crash_db.put()
-    return flask.redirect(flask.url_for('admin_crash_list', order='-modified'))
-
-  return flask.render_template(
-    'crash/admin_crash_update.html',
-    title='%s' % crash_db.guid if crash_id else 'New Crash',
-    html_class='admin-crash-update',
-    form=form,
-    crash_db=crash_db,
-    back_url_for='admin_crash_list',
-    api_url=flask.url_for('api.admin.crash', crash_key=crash_db.key.urlsafe() if crash_db.key else ''),
   )
