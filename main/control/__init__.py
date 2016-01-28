@@ -9,4 +9,5 @@ from .letsencrypt import *
 from .profile import *
 from .test import *
 from .welcome import *
+from .project import *
 from .crash import *

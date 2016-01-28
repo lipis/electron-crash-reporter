@@ -65,12 +65,18 @@ class CrashUpdateForm(wtf.Form):
   )
 
 
-@app.route('/create/', methods=['GET', 'POST'])
-def crash_create():
-  crash_db = model.Crash()
-
-  if not crash_db:
+@app.route('/<string:project_key>/create/', methods=['GET', 'POST'])
+@app.route('/<int:project_id>/create/', methods=['GET', 'POST'])
+def crash_create(project_key=None, project_id=None):
+  project_db = None
+  if project_key:
+    project_db = ndb.Key(urlsafe=project_key).get()
+  if project_id:
+    project_db = model.Project.get_by_id(project_id)
+  if not project_db:
     flask.abort(404)
+
+  crash_db = model.Crash(project_key=project_db.key)
 
   form = CrashUpdateForm(csrf_enabled=False, obj=crash_db)
 
@@ -99,6 +105,7 @@ def crash_create():
     html_class='crash-update',
     form=form,
     crash_db=crash_db,
+    project_db=project_db,
   )
 
 

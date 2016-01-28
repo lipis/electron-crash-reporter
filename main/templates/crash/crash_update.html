@@ -6,13 +6,13 @@
 # block content
   <div class="page-header">
     <h1>
-      {{title}}
+      {{project_db.name}} > {{title}}
     </h1>
   </div>
   <div class="row">
     <div class="col-sm-6">
       <form method="POST" action="." enctype="multipart/form-data" novalidate>
-        {{forms.text_field(form.ver, autofocus=True)}}
+        {{forms.text_field(form.ver)}}
         {{forms.text_field(form.platform)}}
         {{forms.text_field(form.process_type)}}
         {{forms.text_field(form.guid, autofocus=True)}}

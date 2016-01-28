@@ -23,6 +23,10 @@
       <table class="table table-bordered table-striped">
         <tbody>
           <tr>
+            <th class="text-nowrap col-xs-1">Project</th>
+            <td class="col-xs-11">{{crash_db.project_key.get().name if crash_db.project_key else ''}}</td>
+          </tr>
+          <tr>
             <th class="text-nowrap col-xs-1">Electron Version</th>
             <td class="col-xs-11">{{crash_db.ver}}</td>
           </tr>

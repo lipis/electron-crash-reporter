@@ -1,0 +1,41 @@
+# extends 'base.html'
+# import 'macro/utils.html' as utils
+
+# block head
+  {{utils.prefetch_link(next_url)}}
+# endblock
+
+# block content
+  <div class="page-header">
+    <a class="pull-right btn btn-primary" href="{{url_for('project_update')}}">
+      <fa class="fa fa-plus fa-fw"></fa> Add Project
+    </a>
+    <h1>{{title}}</h1>
+  </div>
+  <div class="table-responsive {{'hide' if not project_dbs|count}}">
+    <table class="table table-striped table-bordered table-hover">
+      <thead>
+        <tr class="text-nowrap">
+          <th class="col-xs-6">{{utils.order_by_link('name', 'Name')}}</th>
+          <th class="col-xs-6">{{utils.order_by_link('token', 'Token')}}</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        # for project_db in project_dbs
+          <tr class="row-link" id="{{project_db.key.urlsafe()}}" data-href="{{url_for('project_view', project_id=project_db.key.id())}}">
+            <td>{{project_db.name}}</td>
+            <td>{{project_db.token}}</td>
+            <td class="not-link">
+              <a class="btn btn-sm btn-primary" href="{{url_for('crash_create', project_key=project_db.key.urlsafe())}}">
+                <span class="fa fa-bomb"></span> New Crash
+              </a>
+            </td>
+          </tr>
+        # endfor
+      </tbody>
+    </table>
+  </div>
+
+  {{utils.next_link(next_url)}}
+# endblock

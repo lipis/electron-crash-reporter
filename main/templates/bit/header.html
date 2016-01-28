@@ -11,6 +11,11 @@
     </div>
     <nav class="collapse navbar-collapse" role="navigation">
       <ul class="nav navbar-nav">
+        # if current_user.id > 0
+          <li class="{{'active' if html_class == 'project-list'}}">
+            <a href="{{url_for('project_list')}}"><span class="fa fa-fw fa-medkit"></span> Project List</a>
+          </li>
+        # endif
         # include 'bit/contact_menu.html'
       </ul>
       <ul class="nav navbar-nav navbar-right">
