@@ -11,13 +11,13 @@ import model
 
 class Crash(model.Base):
   project_key = ndb.KeyProperty(kind=model.Project, required=True, verbose_name=u'Project')
-  ver = ndb.StringProperty(required=True, verbose_name=u'Electron Version')
-  platform = ndb.StringProperty(required=True)
-  process_type = ndb.StringProperty(required=True)
-  guid = ndb.StringProperty(required=True, verbose_name=u'GUID')
-  version = ndb.StringProperty(required=True, verbose_name=u'App Version')
-  productName = ndb.StringProperty(required=True, verbose_name=u'Product Name')
-  companyName = ndb.StringProperty(required=True, verbose_name=u'Company Name')
+  ver = ndb.StringProperty(default='', verbose_name=u'Electron Version')
+  platform = ndb.StringProperty(default='')
+  process_type = ndb.StringProperty(default='')
+  guid = ndb.StringProperty(default='', verbose_name=u'GUID')
+  version = ndb.StringProperty(default='', verbose_name=u'App Version')
+  productName = ndb.StringProperty(default='', verbose_name=u'Product Name')
+  companyName = ndb.StringProperty(default='', verbose_name=u'Company Name')
   prod = ndb.StringProperty(default='Electron', required=True, verbose_name=u'Underlying Product')
   blob_key = ndb.BlobKeyProperty(required=True, verbose_name=u'Blob')
 

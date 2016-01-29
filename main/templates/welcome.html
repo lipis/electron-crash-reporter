@@ -4,9 +4,54 @@
   <div class="jumbotron text-center">
     <div class="container">
       <h1>{{config.CONFIG_DB.brand_name}}</h1>
+      <p>
+        Submit issues on
+        <a href="https://github.com/lipis/electron-crash-reporter">GitHub</a>.
+      </p>
     </div>
   </div>
 # endblock
 
 # block content
+  <div class="row">
+    <div class="col-md-offset-2 col-md-8">
+      <p class="lead">
+        Create a <a href="{{url_for('project_list')}}">new project</a>
+        and start uploading your crash reports using the
+        <a href="https://github.com/atom/electron/blob/master/docs/api/crash-reporter.md">crashReporter</a>.
+      </p>
+
+      <hr>
+      <h3>How to test it?</h3>
+
+      <h4>Electron</h4>
+      Execute the <code>process.crash()</code> from anywhere in your code.
+
+      <h4>Terminal</h4>
+      <p>
+        Open a terminal, create a <code>crash.log</code> file and upload it
+        using <code>cURL</code> with the right upload URL that you can take
+        from project's upload URLs.
+      </p>
+
+      <p>
+        If you don't want to create a new project, use this one to test:
+        <a href="{{url_for('crash_create', project_id=5649391675244544)}}">GitHub.</a>
+      </p>
+
+<pre>
+echo 'Hello, world!' > crash.log
+curl --form ver=ver \
+  --form platform=platform \
+  --form process_type=process_type \
+  --form guid=guid \
+  --form _version=_version \
+  --form _productName=_productName \
+  --form prod=prod \
+  --form _companyName=_companyName \
+  --form upload_file_minidump=@crash.log \
+  <span class="text-info">{{url_for('crash_create', project_id=5649391675244544, _external=True)}}</span>
+</pre>
+    </div>
+  </div>
 # endblock

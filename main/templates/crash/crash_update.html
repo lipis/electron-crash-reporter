@@ -6,25 +6,32 @@
 # block content
   <div class="page-header">
     <h1>
-      {{project_db.name}} > {{title}}
+      # if current_user.id == project_db.user_key.id()
+        <a href="{{url_for('project_view', project_id=project_db.key.id())}}">{{project_db.name}}</a>
+      # else
+        {{project_db.name}}
+      # endif
+
+       > {{title}}
     </h1>
   </div>
   <div class="row">
     <div class="col-sm-6">
       <form method="POST" action="." enctype="multipart/form-data" novalidate>
-        {{forms.text_field(form.ver)}}
+        {{forms.text_field(form.ver, autofocus=True)}}
         {{forms.text_field(form.platform)}}
         {{forms.text_field(form.process_type)}}
-        {{forms.text_field(form.guid, autofocus=True)}}
+        {{forms.text_field(form.guid)}}
         {{forms.text_field(form.version)}}
         {{forms.text_field(form.productName)}}
         {{forms.text_field(form.prod)}}
         {{forms.text_field(form.companyName)}}
-        <div class="form-group" style="position: relative;">
-          <a class='btn btn-default' href='javascript:;'>
+        <div class="form-group {{'has-error' if form.upload_file_minidump.errors}}" style="position: relative;">
+          <a class="btn {{'btn-danger' if form.upload_file_minidump.errors else 'btn-default'}}" href="javascript:;">
             <span>Choose File...</span>
             {{form.upload_file_minidump(class='form-control', style='position:absolute;z-index:2;top:0;left:0;right:0;bottom:0;opacity:0;background-color:red;color:red;', onchange='$(this).prev().html($(this).val());')}}
           </a>
+          {{forms.field_errors(form.upload_file_minidump)}}
         </div>
 
         <button type="submit" class="btn btn-primary btn-block btn-lg btn-loading" {{forms.data_loading_text()}}>

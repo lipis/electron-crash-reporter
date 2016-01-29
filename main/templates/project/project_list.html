@@ -27,7 +27,7 @@
             <td>{{project_db.name}}</td>
             <td>{{project_db.token}}</td>
             <td class="not-link">
-              <a class="btn btn-sm btn-primary" href="{{url_for('crash_create', project_key=project_db.key.urlsafe())}}">
+              <a class="btn btn-xs btn-primary" href="{{url_for('crash_create', project_key=project_db.key.urlsafe())}}">
                 <span class="fa fa-bomb"></span> New Crash
               </a>
             </td>

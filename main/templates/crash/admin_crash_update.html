@@ -8,10 +8,10 @@
     <div class="col-sm-6">
       <form method="POST" action="." novalidate>
         {{form.csrf_token}}
-        {{forms.text_field(form.ver)}}
+        {{forms.text_field(form.ver, autofocus=True)}}
         {{forms.text_field(form.platform)}}
         {{forms.text_field(form.process_type)}}
-        {{forms.text_field(form.guid, autofocus=True)}}
+        {{forms.text_field(form.guid)}}
         {{forms.text_field(form.version)}}
         {{forms.text_field(form.productName)}}
         {{forms.text_field(form.prod)}}

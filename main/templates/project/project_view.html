@@ -32,26 +32,25 @@
     <table class="table table-striped table-bordered table-hover">
       <thead>
         <tr class="text-nowrap">
-          <th class="col-xs-1">{{utils.order_by_link('guid', 'GUID')}}</th>
+          <th class="col-xs-2">{{utils.order_by_link('guid', 'GUID')}}</th>
+          <th class="col-xs-3">{{utils.order_by_link('productName', 'Product')}}</th>
           <th class="col-xs-1">{{utils.order_by_link('version', 'Version')}}</th>
-          <th class="col-xs-1">{{utils.order_by_link('productName', 'Product')}}</th>
           <th class="col-xs-1">{{utils.order_by_link('ver', 'Electron')}}</th>
+
           <th class="col-xs-1">{{utils.order_by_link('platform', 'Platform')}}</th>
-          <th class="col-xs-1">{{utils.order_by_link('process_type', 'Process Type')}}</th>
-          <th class="col-xs-1">{{utils.order_by_link('companyName', 'Company')}}</th>
-          <th class="col-xs-1">{{utils.order_by_link('created', 'Created')}}</th>
+          <th class="col-xs-2">{{utils.order_by_link('process_type', 'Process Type')}}</th>
+          <th class="col-xs-2">{{utils.order_by_link('created', 'Created')}}</th>
         </tr>
       </thead>
       <tbody>
         # for crash_db in crash_dbs
           <tr id="{{crash_db.key.urlsafe()}}">
-            <td>{{crash_db.guid}}</td>
+            <td class="ellipsis">{{crash_db.guid}}</td>
+            <td>{{crash_db.productName}} <span class="text-muted small">({{crash_db.companyName}})</span></td>
             <td>{{crash_db.version}}</td>
-            <td>{{crash_db.productName}}</td>
             <td>{{crash_db.ver}}</td>
             <td>{{crash_db.platform}}</td>
             <td>{{crash_db.process_type}}</td>
-            <td>{{crash_db.companyName}}</td>
             <td>
               <time datetime="{{crash_db.created}}">
                 {{crash_db.created.strftime('%Y-%m-%d')}}

@@ -67,7 +67,7 @@ def project_list():
   return flask.render_template(
     'project/project_list.html',
     html_class='project-list',
-    title='Project List',
+    title='Projects',
     project_dbs=project_dbs,
     next_url=util.generate_next_url(project_cursor),
     api_url=flask.url_for('api.project.list'),
@@ -84,7 +84,9 @@ def project_view(project_id):
   if not project_db or project_db.user_key != auth.current_user_key():
     flask.abort(404)
 
-  crash_dbs, crash_cursor = project_db.get_crash_dbs()
+  crash_dbs, crash_cursor = project_db.get_crash_dbs(
+      order=util.param('order') or '-created',
+    )
 
   return flask.render_template(
     'project/project_view.html',
@@ -109,7 +111,7 @@ def admin_project_list():
   return flask.render_template(
     'project/admin_project_list.html',
     html_class='admin-project-list',
-    title='Project List',
+    title='Projects',
     project_dbs=project_dbs,
     next_url=util.generate_next_url(project_cursor),
     api_url=flask.url_for('api.admin.project.list'),

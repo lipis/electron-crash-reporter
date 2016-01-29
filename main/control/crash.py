@@ -1,5 +1,6 @@
 # coding: utf-8
 
+from uuid import uuid4
 from flask.ext import wtf
 from google.appengine.ext import ndb
 from google.appengine.ext import blobstore
@@ -21,22 +22,22 @@ from main import app
 class CrashUpdateForm(wtf.Form):
   ver = wtforms.StringField(
     model.Crash.ver._verbose_name,
-    [wtforms.validators.required()],
+    [wtforms.validators.optional()],
     filters=[util.strip_filter],
   )
   platform = wtforms.StringField(
     model.Crash.platform._verbose_name,
-    [wtforms.validators.required()],
+    [wtforms.validators.optional()],
     filters=[util.strip_filter],
   )
   process_type = wtforms.StringField(
     model.Crash.process_type._verbose_name,
-    [wtforms.validators.required()],
+    [wtforms.validators.optional()],
     filters=[util.strip_filter],
   )
   guid = wtforms.StringField(
     model.Crash.guid._verbose_name,
-    [wtforms.validators.required()],
+    [wtforms.validators.optional()],
     filters=[util.strip_filter],
   )
   version = wtforms.StringField(
@@ -51,7 +52,7 @@ class CrashUpdateForm(wtf.Form):
   )
   prod = wtforms.StringField(
     model.Crash.prod._verbose_name,
-    [wtforms.validators.required()],
+    [wtforms.validators.optional()],
     filters=[util.strip_filter],
   )
   companyName = wtforms.StringField(
@@ -76,7 +77,12 @@ def crash_create(project_key=None, project_id=None):
   if not project_db:
     flask.abort(404)
 
-  crash_db = model.Crash(project_key=project_db.key)
+  crash_db = model.Crash(
+    project_key=project_db.key,
+    guid=str(uuid4()),
+    productName=project_db.name,
+    companyName=project_db.name,
+  )
 
   form = CrashUpdateForm(csrf_enabled=False, obj=crash_db)
 
@@ -84,17 +90,17 @@ def crash_create(project_key=None, project_id=None):
     form.version.data = util.param('_version') or form.version.data
     form.productName.data = util.param('_productName') or form.productName.data
     form.companyName.data = util.param('_companyName') or form.companyName.data
-    if not form.version.data:
-      form.version.errors.append('This field is required.')
-    if not form.productName.data:
-      form.productName.errors.append('This field is required.')
-    if not form.companyName.data:
-      form.companyName.errors.append('This field is required.')
+    # if not form.version.data:
+    #   form.version.errors.append('This field is required.')
+    # if not form.productName.data:
+    #   form.productName.errors.append('This field is required.')
+    # if not form.companyName.data:
+    #   form.companyName.errors.append('This field is required.')
 
     if not form.errors:
       form.populate_obj(crash_db)
       file_data = flask.request.files[form.upload_file_minidump.name].read()
-      blob_key = create_file(form.guid.data, file_data)
+      blob_key = create_file(project_db, form.guid.data, file_data)
       crash_db.blob_key = blob_key
       crash_db.put()
       return '200'
@@ -109,8 +115,8 @@ def crash_create(project_key=None, project_id=None):
   )
 
 
-def create_file(name, data):
-  filename = '/%s/%s' % (config.CONFIG_DB.bucket_name, name)
+def create_file(project_db, name, data):
+  filename = '/%s/%s/%s' % (config.CONFIG_DB.bucket_name, project_db.key.id(), name)
   with cloudstorage.open(filename, 'w', content_type='text/plain') as f:
     f.write(data)
 
