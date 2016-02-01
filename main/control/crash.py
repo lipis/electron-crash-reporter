@@ -90,14 +90,9 @@ def crash_create(project_key=None, project_id=None):
     form.version.data = util.param('_version') or form.version.data
     form.productName.data = util.param('_productName') or form.productName.data
     form.companyName.data = util.param('_companyName') or form.companyName.data
-    # if not form.version.data:
-    #   form.version.errors.append('This field is required.')
-    # if not form.productName.data:
-    #   form.productName.errors.append('This field is required.')
-    # if not form.companyName.data:
-    #   form.companyName.errors.append('This field is required.')
-
     if not form.errors:
+      if not form.guid.data:
+        form.guid.data = str(uuid4())
       form.populate_obj(crash_db)
       file_data = flask.request.files[form.upload_file_minidump.name].read()
       blob_key = create_file(project_db, form.guid.data, file_data)
