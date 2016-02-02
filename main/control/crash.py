@@ -111,7 +111,7 @@ def crash_create(project_key=None, project_id=None):
 
 
 def create_file(project_db, name, data):
-  filename = '/%s/%s/%s' % (config.CONFIG_DB.bucket_name, project_db.key.id(), name)
+  filename = '/%s/%s/%s.dmp' % (config.CONFIG_DB.bucket_name, project_db.key.id(), name)
   with cloudstorage.open(filename, 'w', content_type='text/plain') as f:
     f.write(data)
 
