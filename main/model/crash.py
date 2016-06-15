@@ -36,7 +36,8 @@ class Crash(model.Base):
     'productName': fields.String,
     'prod': fields.String,
     'companyName': fields.String,
-    'blob_key': fields.Key,
+    'blob_key': fields.BlobKey,
+    'serve_url': fields.String,
   }
 
   FIELDS.update(model.Base.FIELDS)

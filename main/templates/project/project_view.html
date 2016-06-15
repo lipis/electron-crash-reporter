@@ -40,6 +40,7 @@
           <th class="col-xs-1">{{utils.order_by_link('platform', 'Platform')}}</th>
           <th class="col-xs-2">{{utils.order_by_link('process_type', 'Process Type')}}</th>
           <th class="col-xs-2">{{utils.order_by_link('created', 'Created')}}</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -55,6 +56,11 @@
               <time datetime="{{crash_db.created}}">
                 {{crash_db.created.strftime('%Y-%m-%d')}}
               </time>
+            </td>
+            <td>
+              <a href="{{crash_db.serve_url}}?save_as={{crash_db.guid}}.dmp">
+                <span class="fa fa-fw fa-download"></span>
+              </a>
             </td>
           </tr>
         # endfor
